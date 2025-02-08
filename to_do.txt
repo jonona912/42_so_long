@@ -1,0 +1,14 @@
+-> Jonona DONE
+-> Open a window (Done)
+-> Upload image (Done)
+-> Open 1920 x 1080 window (Done)
+-> Populate it with grass (Done)
+-> Create a map 
+
+-> bring gnl, ft_printf, libft
+-> make the Makefile
+
+
+
+// print a window with coordinates of the character and change the position to 0
+// then each time a key is pressed, change the position of the char

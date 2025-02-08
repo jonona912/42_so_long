@@ -1,0 +1,36 @@
+// main(input)
+// check validity()
+
+// 5 variables valid for norminette
+// lin_len
+// check validity()
+// first_line len;
+
+// all in is_map valid
+// is_wall; DONE
+// is_space
+// is_collectible
+// is_exit (DONE)
+// is_start_pos; (DONE) 
+
+
+
+// create a linked list
+// read with gnl and attach to linked list
+// send the content of the linked list to be checked
+
+
+chack path (char ***map_arr)
+
+
+
+
+// Seems you are done, plan for tomorrow
+// read subject one more time
+// make Walls
+// find character
+// Make ohter
+// work with buttons...
+
+
+// 

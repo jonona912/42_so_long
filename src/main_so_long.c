@@ -39,68 +39,122 @@ char	*data4;
 int	xpm1_x;
 int	xpm1_y;
 
-int	g_local_endian;
+int		g_local_endian;
+int		g_win_x;
+int		g_win_y;
+char	**g_map;
 
 #define	WIN1_SX		1980
 #define	WIN1_SY		1080
 #define	IM1_SX		32
 #define	IM1_SY		32
 
-int	color_map_1(void *win,int w,int h, void *g_mlx)
+// is move valid
+void	find_pos(int *x_pos, int *y_pos)
 {
-  int	x;
-  int	y;
-  int	color;
+	int	x;
+	int	y;
 
-  x = w;
-  while (x--)
-  {
-    y = h;
-    while (y--)
-      {
-        color = (x*255)/w+((((w-x)*255)/w)<<16)+(((y*255)/h)<<8);
-  mlx_pixel_put(g_mlx,win,x,y,color);
-      }
-  }
+	y = 0;
+	while (*(g_map + y))
+	{
+		x = 0;
+		while (*(*(g_map + y) + x))
+		{
+			if (*(*(g_map + y) + x) == 'P')
+			{
+				*x_pos = x;
+				*y_pos = y;
+				return ;
+			}
+			x++;
+		}
+		y++;
+	}
 }
 
-// draw map
-int	draw_map(char **map, int p_row, int p_col)
+int	is_mv_valid(int x_pos, int y_pos)
 {
-	// draw a 
+	return (*(*(g_map + y_pos) + x_pos) == '0' || *(*(g_map + y_pos) + x_pos) == 'C');
+}
+
+int	make_move(move_dir dir)
+{
+	int	x_pos;
+	int	y_pos;
+
+	find_pos(&x_pos, &y_pos);
+	if (dir == RIGHT && *(*(g_map + y_pos) + x_pos + 1) == 'E')
+		exit(1);
+	else if (dir == LEFT && *(*(g_map + y_pos) + x_pos - 1) == 'E')
+		exit(1);
+	else if (dir == TOP && *(*(g_map + y_pos - 1) + x_pos) == 'E')
+		exit(1);
+	else if (dir == DOWN && *(*(g_map + y_pos + 1) + x_pos) == 'E')
+		exit(1);
+	if (dir == RIGHT && is_mv_valid(x_pos + 1, y_pos))
+	{
+		*(*(g_map + y_pos) + x_pos) = '0';
+		*(*(g_map + y_pos) + x_pos + 1) = 'P';
+		return (1);
+	}
+	else if (dir == LEFT && is_mv_valid(x_pos - 1, y_pos))
+	{
+		*(*(g_map + y_pos) + x_pos) = '0';
+		*(*(g_map + y_pos) + x_pos - 1) = 'P';
+		return (1);
+	}
+	else if (dir == TOP && is_mv_valid(x_pos, y_pos - 1))
+	{
+		*(*(g_map + y_pos) + x_pos) = '0';
+		*(*(g_map + y_pos - 1) + x_pos) = 'P';
+		return (1);
+	}
+	else if (dir == DOWN && is_mv_valid(x_pos, y_pos + 1))
+	{
+		*(*(g_map + y_pos) + x_pos) = '0';
+		*(*(g_map + y_pos + 1) + x_pos) = 'P';
+		return (1);
+	}
+	return (0);
 }
 
 int	key_win1(int key, void *p)
 {
+	t_game_lst	*g_lst;
+
+	g_lst = (t_game_lst *) p;
 	printf("Key in Win1 : %d\n",key);
-	if (key == 97)
+	if (key == 97 && make_move(LEFT))
 	{
-	mlx_clear_window(g_mlx, g_win);
-	int  i = 0;
-	int  j = 0;
-	while (i < WIN1_SY)
-	{
-		j = 0;
-		while (j < WIN1_SX)
-		{
-			mlx_put_image_to_window(g_mlx, g_win, g_bkgd_img, j, i);
-			j += xpm1_x;
-		}
-		i += xpm1_y;
+		mlx_clear_window(g_mlx, g_win);
+		draw_map(g_map, g_lst->imgs, 0, 0);
 	}
-	mlx_put_image_to_window(g_mlx, g_win, g_wall_img, 32, 32);
+	else if(key == 100 && make_move(RIGHT))
+	{
+		mlx_clear_window(g_mlx, g_win);
+		draw_map(g_map, g_lst->imgs, 0, 0);
+	}
+	else if(key == 119 && make_move(TOP))
+	{
+		mlx_clear_window(g_mlx, g_win);
+		draw_map(g_map, g_lst->imgs, 0, 0);
+	}
+	else if(key == 115 && make_move(DOWN))
+	{
+		mlx_clear_window(g_mlx, g_win);
+		draw_map(g_map, g_lst->imgs, 0, 0);
 	}
 	if (key==0xFF1B) // if escape
 		exit(0);
 	return (1);
 }
 
-int	color_map_2(unsigned char *data,int bpp,int sl,int w,int h,int endian, int type);
-
 int	main(int argc, char **argv)
 {
 	char  **map;
 	int		a;
+	t_game_lst	game_lst;
 
 	if (argc != 2)// && !ft_strstr(argv[1], ".ber"))
 	{
@@ -108,136 +162,19 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	map = is_map_valid(argv[1]);
-	sl_crt_win();
-	// a = 0x11223344;
-	// if (((unsigned char *)&a)[0] == 0x11)
-	// 	g_local_endian = 1;
-	// else
-	// 	g_local_endian = 0;
-	// printf(" => Local Endian : %d\n",g_local_endian);
-	// printf(" => Connection ...");
-	// if (!(g_mlx = mlx_init())) // establishes connection between software and hardware
-	// {
-	// 	printf(" !! KO !!\n");
-	// 	exit(1);
-	// }
-	// printf(" => Window1 %dx%d \"Background\" ...", WIN1_SX, WIN1_SY);
-	// if (!(g_win = mlx_new_window(g_mlx, WIN1_SX, WIN1_SY, "Background"))) // opens new window titled Title1
-	// {
-	// 	printf(" !! KO !!\n");
-	// 	exit(1);
-	// }
-	// printf("OK\n");
+	g_map = map;
+	game_lst.map = map;
+	sl_crt_win(map); // create window, duh
 
-
-	printf(" => Xpm from file ...");
-	if (!(g_bkgd_img = mlx_xpm_file_to_image(g_mlx,"./images/dark_green.xpm",&xpm1_x,&xpm1_y)))
-	{
-		printf(" !! KO !!\n");
-		exit(1);
-	}
-	data1 = mlx_get_data_addr(g_bkgd_img,&bpp1,&sl1,&endian1);
-	printf("OK (xpm %dx%d)(img bpp2: %d, sizeline2: %d endian: %d type: %d)\n",
-	 xpm1_x,xpm1_y,bpp1,sl1,endian1,((t_img *)g_bkgd_img)->type);
-	sleep(2);
+	game_lst.imgs = connect_xpm_files(&game_lst.imgs);
 
 	printf(" => Put xpm ...");
-	int  i = 0;
-	int  j = 0;
-	while (i < WIN1_SY)
-	{
-		j = 0;
-		while (j < WIN1_SX)
-		{
-			mlx_put_image_to_window(g_mlx, g_win, g_bkgd_img, j, i);
-			j += xpm1_x;
-		}
-		i += xpm1_y;
-	}
-	if (!(g_wall_img = mlx_xpm_file_to_image(g_mlx,"images/walk_Left_Down_2.xpm",&xpm1_x,&xpm1_y)))
-	{
-		printf(" !! KO !!\n");
-		exit(1);
-	}
-	printf("OK (xpm %dx%d)(img bpp2: %d, sizeline2: %d endian: %d type: %d)\n",
-	 xpm1_x,xpm1_y,bpp1,sl1,endian1,((t_img *)g_bkgd_img)->type);
-	mlx_put_image_to_window(g_mlx, g_win, g_wall_img, 0, 0);
-
-	mlx_key_hook(g_win,key_win1,0);
+	draw_map(map, game_lst.imgs, 0, 0);
+	mlx_key_hook(g_win,key_win1,&game_lst);
 	printf("OK\n");
-	sleep(2);
 
 
 
 	mlx_loop(g_mlx);
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-// int main(int argc, char **argv)
-// {
-// 	printf("errno: %d\n", errno);
-// 	printf("message: %s\n", strerror(errno));
-// 	int fd = open(argv[1], O_RDONLY);
-
-// 	printf("errno: %d\n", errno);
-// 	printf("message: %s\n", strerror(2));
-// 	perror("Perror");
-// }
-
-
-
-
-int	color_map_2(unsigned char *data,int bpp,int sl,int w,int h,int endian, int type)
-{
-  int	x;
-  int	y;
-  int	opp;
-  int	dec;
-  int	color;
-  int	color2;
-  unsigned char *ptr;
-
-  opp = bpp/8;
-  printf("(opp : %d) ",opp);
-  y = h;
-  while (y--)
-    {
-      ptr = data+y*sl;
-      x = w;
-      while (x--)
-        {
-	  if (type==2)
-	    color = (y*255)/w+((((w-x)*255)/w)<<16)
-	      +(((y*255)/h)<<8);
-	  else
-	    color = (x*255)/w+((((w-x)*255)/w)<<16)+(((y*255)/h)<<8);
-          color2 = mlx_get_color_value(g_mlx,color);
-	  dec = opp;
-	  while (dec--)
-	    if (endian==g_local_endian)
-	      {
-		if (endian)
-		  *(ptr+x*opp+dec) = ((unsigned char *)(&color2))[4-opp+dec];
-		else
-		  *(ptr+x*opp+dec) = ((unsigned char *)(&color2))[dec];
-	      }
-	    else
-	      {
-		if (endian)
-		  *(ptr+x*opp+dec) = ((unsigned char *)(&color2))[opp-1-dec];
-		else
-		  *(ptr+x*opp+dec) = ((unsigned char *)(&color2))[3-dec];
-	      }
-        }
-    }
-}
-

@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 19:50:36 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/03 23:05:40 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:40:27 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 // char	*ft_strncpy(char *dest, const char *src, size_t n);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
-char	*strstr(const char *big, const char *little);
+char	*ft_trstr(const char *big, const char *little);
+char	*ft_strstr_last(const char *big, const char *little);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);

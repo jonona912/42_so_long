@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 19:24:05 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/10 10:14:37 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:32:58 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,8 @@
 # include "../libft/libft.h"
 # include "../minilibx-linux/mlx.h"
 
-
-// from test file ========
-extern void	*g_mlx;
-extern void	*g_win;
-extern int	g_local_endian;
-extern int	g_win_x;
-extern int	g_win_y;
-extern char	**g_map;
-// extern t_img_lst	g_imgs;
-
-#define	WIN1_SX		1980
-#define	WIN1_SY		1080
-
-#define WIDTH 64
-#define HEIGHT 64
+#define WIDTH 128
+#define HEIGHT 128
 // ==================
 
 typedef struct	s_sl_lst
@@ -62,7 +49,7 @@ typedef struct s_map_char
 typedef struct s_img_sl
 {
 	void	*img;
-	char	*img_path;
+	char	*path;
 	int		width;
 	int		height;
 	char	*data;
@@ -84,6 +71,7 @@ typedef struct s_game_lst
 {
 	t_img_lst	imgs;
 	char		**map;
+	int			mv_ctr;
 	int			x;
 	int			y;
 	void		*win;
@@ -99,9 +87,15 @@ typedef enum {
 } move_dir;
 
 
+typedef enum
+{
+	NO_IMAGE,
+	IS_IMAGE
+} is_image;
+
+
 // check_map_path.c
 int	check_map_path(char ***map, int collectible);
-
 
 
 // check_map_wall.c
@@ -112,8 +106,26 @@ int	check_str_sides(char *str);
 int	check_for_wall(t_sl_lst	**map_lst);
 
 //  create_window.c
-void	sl_crt_win();
-t_img_lst	connect_xpm_files();
+void	sl_map_dimensions(char **map, int *height, int *width);
+t_game_lst	sl_crt_win(t_game_lst *g_lst);
+void	connect_xpm_files_helper(t_img_sl *imgs, t_game_lst *g_lst);
+void	connect_xpm_files(t_game_lst *g_lst);
+
+// making_movements.c
+void	find_pos(t_game_lst *g_lst, int *x_pos, int *y_pos);
+void	set_positions(move_dir dir, int *x_pos, int *y_pos);
+int	make_move(t_game_lst *g_lst, move_dir dir);
+int	sl_is_move(int key, t_game_lst *g_lst);
+int	key_response(int key, void *p);
+
+// sl_draw_map.c
+void	connect_xpm_files(t_game_lst *g_lst);
+int	draw_map_helper(t_game_lst *g_lst, int i, int y);
+int	draw_map(t_game_lst *g_lst);
+
+// sl_free_mem.c
+int	sl_free_game_mem(t_game_lst *g_lst, is_image status);
+void sl_free_double_str(char ***str);
 
 // sl_lists.c
 t_sl_lst	*sl_new_node(char *str);
@@ -122,13 +134,19 @@ void		sl_lst_add_back(t_sl_lst **lst, t_sl_lst *node);
 void		sl_lst_clear(t_sl_lst **lst);
 int	sl_lst_len(t_sl_lst *lst);
 
+// map_validity_lst.c
+char	**sl_convert_lst_str(t_sl_lst **lst);
+int	lst_count_chars(t_sl_lst **lst_map, int c);
+int	sl_check_pos(t_sl_lst **lst_map);
+int	check_char_set_helper(char *str);
+int	check_char_set(t_sl_lst **lst_map);
+
 // map_validity.c
-char		**is_map_valid(char *map);
 int			sl_strlen(char *str);
-int	draw_map(char **map, t_img_lst imgs, int p_row, int p_col);
-
-void	sl_crt_win(char **map);
-
+void	sl_free_str_lst(t_sl_lst **lst_map, char *line);
+void	create_map_list(t_sl_lst **lst_map, int fd);
+int	sl_count_char(char	*str, int c);
+char		**is_map_valid(char *map);
 
 
 

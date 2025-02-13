@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:35:34 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/04 23:13:02 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:45:16 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	sl_map_error(char *str, int n)
 {
+	ft_putstr_fd("Error\n", 2);
 	ft_putstr_fd(str, 2);
 	exit(n);
 }

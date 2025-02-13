@@ -15,14 +15,18 @@ LIBS = -L $(FT_PRINTF_DIR) -lftprintf -L $(GNL_DIR) -lgnl -L $(MINILIBX_DIR) -lm
 
 
 NAME = so_long
-CC = cc
-CFLAGS = -g #-Wall -Wextra -Werror
+CC = gcc
+CFLAGS = -g #-fsanitize=address #-Wall -Wextra -Werror
 
 SRCS = check_map_path.c \
 		check_map_wall.c \
 		create_window.c \
 		main_so_long.c \
+		making_movements.c \
+		map_validity_lst.c \
 		map_validity.c \
+		sl_draw_map.c \
+		sl_free_mem.c \
 		sl_lists.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstr.c                                        :+:      :+:    :+:   */
+/*   ft_strstr_last.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/03 22:57:12 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/13 16:39:32 by zkhojazo         ###   ########.fr       */
+/*   Created: 2025/02/13 16:17:59 by zkhojazo          #+#    #+#             */
+/*   Updated: 2025/02/13 16:39:28 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strstr(const char *big, const char *little)
+char	*ft_strstr_last(const char *big, const char *little)
 {
 	size_t	i;
-	size_t	j;
+	size_t	little_len;
+	size_t	big_len;
 
-	if (!ft_strlen(little))
+	little_len = ft_strlen(little);
+	if (!little_len)
 		return ((char *)big);
+	big_len = ft_strlen(big);
+	if (big_len < little_len)
+		return (NULL);
+	big_len -= little_len;
 	i = 0;
-	while (*(big + i))
+	while (*(big + big_len + i) == *(little + i))
 	{
-		if (*(big + i) == *little)
-		{
-			j = 0;
-			while (*(big + i + j) == *(little + j))
-			{
-				j++;
-				if (*(little + j) == '\0')
-					return ((char *) big + i);
-			}
-		}
 		i++;
+		if (*(little + i) == '\0')
+			return ((char *) big + big_len);
 	}
 	return (NULL);
 }

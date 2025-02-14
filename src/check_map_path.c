@@ -6,13 +6,13 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 11:43:56 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/13 17:14:53 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:33:52 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-void	traverse_map_path(char **map, int r, int c, map_c_count *chars)
+void	traverse_map_path(char **map, int r, int c, t_c_count *chars)
 {
 	if (*(*(map + r) + c) == 'E')
 	{
@@ -101,7 +101,7 @@ int	check_map_path(char ***map, int collectible)
 {
 	int			r;
 	int			c;
-	map_c_count	map_chars;
+	t_c_count	map_chars;
 	char		**map_cp;
 
 	map_chars.clc = 0;

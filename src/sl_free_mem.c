@@ -6,13 +6,13 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:47:15 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/13 17:14:59 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:38:13 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-int	sl_free_game_mem(t_game_lst *g_lst, is_image status)
+int	sl_free_game_mem(t_game_lst *g_lst, t_is_img status)
 {
 	if (status == IS_IMAGE)
 	{

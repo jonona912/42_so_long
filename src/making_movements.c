@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:27:49 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/13 19:34:41 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:38:05 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,7 @@ void	find_pos(t_game_lst *g_lst, int *x_pos, int *y_pos)
 	}
 }
 
-// int	is_mv_valid(t_game_lst *g_lst, int x_pos, int y_pos)
-// {
-// 	return (*(*(g_lst->map + y_pos) + x_pos) == '0'
-// 		|| *(*(g_lst->map + y_pos) + x_pos) == 'C');
-// }
-
-void	set_positions(move_dir dir, int *x_pos, int *y_pos)
+void	set_positions(t_mv_dir dir, int *x_pos, int *y_pos)
 {
 	if (dir == RIGHT)
 		*x_pos += 1;
@@ -53,7 +47,7 @@ void	set_positions(move_dir dir, int *x_pos, int *y_pos)
 		*y_pos += 1;
 }
 
-int	make_move(t_game_lst *g_lst, move_dir dir)
+int	make_move(t_game_lst *g_lst, t_mv_dir dir)
 {
 	int	x_pos;
 	int	y_pos;

@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:21:39 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/13 19:23:41 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:10:20 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	sl_check_pos(t_sl_lst **lst_map)
 	int	pos_num;
 
 	exit_num = lst_count_chars(lst_map, 'P');
-	pos_num += lst_count_chars(lst_map, 'E');
+	pos_num = lst_count_chars(lst_map, 'E');
 	if (exit_num != 1 || pos_num != 1)
 	{
 		sl_lst_clear(lst_map);
